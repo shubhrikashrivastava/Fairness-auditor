@@ -6,12 +6,22 @@ def show_results(before_acc, after_acc):
     col1, col2 = st.columns(2)
 
     with col1:
-        st.metric("Before Accuracy", before_acc)
+        st.metric(
+            label="Before Accuracy",
+            value=f"{before_acc:.2f}"
+        )
 
     with col2:
-        st.metric("After Accuracy", after_acc)
+        st.metric(
+            label="After Accuracy",
+            value=f"{after_acc:.2f}",
+            delta=f"{after_acc - before_acc:.2f}"
+        )
 
-    if after_acc >= before_acc:
-        st.success("✅ Fairness Improved")
+    # Interpretation
+    if after_acc > before_acc:
+        st.success("✅ Model performance improved after bias mitigation")
+    elif after_acc == before_acc:
+        st.info("ℹ️ Model performance remained the same")
     else:
-        st.warning("⚠️ No Significant Improvement")
+        st.warning("⚠️ Accuracy decreased, but fairness may still be improved")
