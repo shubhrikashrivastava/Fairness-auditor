@@ -2,8 +2,7 @@ import streamlit as st
 from components.upload import upload_file
 from components.charts import plot_distribution
 from components.results import show_results
-from utils.api import detect_bias, mitigate_bias
-
+from utils.api_client import run_pipeline
 st.set_page_config(page_title="Fairness Auditor", layout="wide")
 
 st.title("⚖️ Fairness Auditor")
