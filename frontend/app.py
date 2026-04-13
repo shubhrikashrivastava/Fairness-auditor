@@ -3,41 +3,71 @@ from components.upload import upload_file
 from components.charts import plot_distribution
 from components.results import show_results
 from utils.api_client import run_pipeline
+
 st.set_page_config(page_title="Fairness Auditor", layout="wide")
 
+# HEADER
 st.title("⚖️ Fairness Auditor")
 st.write("Detecting and fixing dataset bias before training AI models")
 
-# Upload
+st.divider()
+
+# INFO
+st.info("Click the button below to run the fairness pipeline on a prebuilt dataset")
+
+# (Optional Upload - not used in ML yet)
 file = upload_file()
 
-if file:
+st.divider()
+
+# MAIN BUTTON
+if st.button("🚀 Run Fairness Pipeline"):
+
+    result = run_pipeline()
+    data = result["data"]
+
+    # CREATE COLUMNS
     col1, col2 = st.columns(2)
 
-    # Detect Bias
+    # BEFORE SMOTE
     with col1:
-        st.subheader("🔍 Bias Detection")
+        st.subheader("🔴 Before SMOTE (Biased Data)")
+        plot_distribution(data["before_distribution"], "Before SMOTE")
 
-        if st.button("Detect Bias"):
-            result = detect_bias(file)
-
-            plot_distribution(result["distribution"], "Before SMOTE")
-
-            if result["is_biased"]:
-                st.warning("⚠️ Dataset is Biased")
-            else:
-                st.success("✅ Dataset is Balanced")
-
-    # Fix Bias
+    # AFTER SMOTE
     with col2:
-        st.subheader("⚖️ Bias Mitigation")
+        st.subheader("🟢 After SMOTE (Balanced Data)")
+        plot_distribution(data["after_distribution"], "After SMOTE")
 
-        if st.button("Fix Bias"):
-            result = mitigate_bias(file)
+    st.divider()
 
-            plot_distribution(result["after_distribution"], "After SMOTE")
+    # PERFORMANCE
+    st.subheader("📊 Model Performance")
+    show_results(data["before_accuracy"], data["after_accuracy"])
 
-            show_results(
-                result["before_accuracy"],
-                result["after_accuracy"]
-            )
+    # OPTIONAL: Confusion Matrix
+    with st.expander("📉 View Confusion Matrices"):
+        st.write("Before SMOTE:")
+        st.write(data["before_confusion_matrix"])
+
+        st.write("After SMOTE:")
+        st.write(data["after_confusion_matrix"])
+
+st.divider()
+
+# WORKFLOW SECTION
+st.subheader("📌 Workflow")
+st.markdown("""
+1. Load dataset  
+2. Create imbalance  
+3. Train model (before SMOTE)  
+4. Apply SMOTE  
+5. Retrain model  
+6. Compare results  
+""")
+
+# SIDEBAR
+st.sidebar.title("About")
+st.sidebar.info(
+    "This tool detects bias in datasets and uses SMOTE to balance them before training ML models."
+)
