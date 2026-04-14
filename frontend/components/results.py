@@ -25,3 +25,7 @@ def show_results(before_acc, after_acc):
         st.info("ℹ️ Model performance remained the same")
     else:
         st.warning("⚠️ Accuracy decreased, but fairness may still be improved")
+        
+improvement = ((after_acc - before_acc) / before_acc) * 100
+
+st.markdown(f"📈 **Accuracy Improvement:** {improvement:.2f}%")
