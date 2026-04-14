@@ -1,7 +1,8 @@
 import streamlit as st
 
+
 def show_results(before_acc, after_acc):
-    st.subheader("📊 Model Performance")
+    st.subheader("Model Performance")
 
     col1, col2 = st.columns(2)
 
@@ -21,12 +22,12 @@ def show_results(before_acc, after_acc):
     # Improvement %
     if before_acc != 0:
         improvement = ((after_acc - before_acc) / before_acc) * 100
-        st.markdown(f"📈 **Accuracy Improvement:** {improvement:.2f}%")
+        st.markdown(f"**Accuracy Improvement:** {improvement:.2f}%")
 
     # Interpretation
     if after_acc > before_acc:
-        st.success("✅ Model performance improved after bias mitigation")
+        st.success("Model performance improved after bias mitigation.")
     elif after_acc == before_acc:
-        st.info("ℹ️ Model performance remained the same")
+        st.info("Model performance remained the same.")
     else:
-        st.warning("⚠️ Accuracy decreased, but fairness may still be improved")
+        st.warning("Accuracy decreased, but fairness may still be improved.")
