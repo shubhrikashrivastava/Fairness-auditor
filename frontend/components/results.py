@@ -18,6 +18,11 @@ def show_results(before_acc, after_acc):
             delta=f"{after_acc - before_acc:.2f}"
         )
 
+    # Improvement %
+    if before_acc != 0:
+        improvement = ((after_acc - before_acc) / before_acc) * 100
+        st.markdown(f"📈 **Accuracy Improvement:** {improvement:.2f}%")
+
     # Interpretation
     if after_acc > before_acc:
         st.success("✅ Model performance improved after bias mitigation")
@@ -25,7 +30,3 @@ def show_results(before_acc, after_acc):
         st.info("ℹ️ Model performance remained the same")
     else:
         st.warning("⚠️ Accuracy decreased, but fairness may still be improved")
-        
-improvement = ((after_acc - before_acc) / before_acc) * 100
-
-st.markdown(f"📈 **Accuracy Improvement:** {improvement:.2f}%")
