@@ -22,9 +22,9 @@ st.divider()
 
 # MAIN BUTTON
 if st.button("🚀 Run Fairness Pipeline"):
-
-    result = run_pipeline()
-    data = result["data"]
+    with st.spinner("Running fairness pipeline..."):
+        result = run_pipeline()
+        data = result["data"]
 
     # CREATE COLUMNS
     col1, col2 = st.columns(2)
@@ -71,3 +71,11 @@ st.sidebar.title("About")
 st.sidebar.info(
     "This tool detects bias in datasets and uses SMOTE to balance them before training ML models."
 )
+st.divider()
+st.sidebar.success("🚀 Demo Mode: Prebuilt Dataset")
+st.subheader("🎯 Why Fairness Matters")
+st.markdown("""
+- Biased datasets lead to unfair predictions  
+- Critical in domains like healthcare and hiring  
+- Our system ensures balanced learning using SMOTE  
+""")
