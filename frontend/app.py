@@ -162,6 +162,33 @@ with tab_dashboard:
     with c2:
         plot_distribution(after_dist, "After SMOTE Distribution")
     show_results(data["before_accuracy"], data["after_accuracy"])
+    st.markdown("---")
+    st.subheader("🔍 What Changed After Mitigation")
+
+    # Calculate values
+    before_min = min(before_dist.values())
+    before_max = max(before_dist.values())
+
+    after_min = min(after_dist.values())
+    after_max = max(after_dist.values())
+
+    before_ratio = before_min / before_max
+    after_ratio = after_min / after_max
+
+    accuracy_change = data["after_accuracy"] - data["before_accuracy"]
+
+    # Display insights
+    st.markdown(f"""
+    - Minority class samples increased from **{before_min} → {after_min}**
+    - Dataset balance improved (**{before_ratio:.2f} → {after_ratio:.2f}**)
+    - Model accuracy changed by **{accuracy_change:.3f}**
+    """)
+
+    # Final conclusion
+    if after_ratio > before_ratio:
+        st.success("✅ Bias reduced and dataset is more balanced after SMOTE")
+    else:
+        st.warning("⚠️ No significant improvement in dataset balance")
 
 with tab_alerts:
     st.subheader("Bias Alerts")
